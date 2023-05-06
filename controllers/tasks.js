@@ -1,22 +1,57 @@
 const Task= require('../models/task')
 
-const getAllTasks=(req,res)=>{
-  //  const getAll= await Task.get
-    res.json(req.body)
+const getAllTasks=async(req,res)=>{
+    try{
+        const getAll= await Task.find({});
+        res.status(201).json({getAll,amount:getAll.length})
+        // res.json(req.body)
+    }catch(err){
+        res.status(404).json({msg:err})
+    }
+  
 }
 
 const createTask=async(req,res)=>{
-    const task=await Task.create(req.body)
-    res.status(201).json({task})
+    try{
+        const task=await Task.create(req.body)
+        res.status(201).json({task})
+    }catch(err){
+   res.status(500).json({msg:err})
+    }
+   
 }
-const getTask=(req,res)=>{
-    res.send("get a single task")
+const getTask=async(req,res)=>{
+    try{
+        
+        const get= await Task.findOne({_id:req.params.id});
+        res.status(201).json({get})
+        // res.json(req.body)
+    }catch(err){
+        res.status(404).json({msg:err})
+    }
 }
-const updateTask=(req,res)=>{
-    res.send("update a task")
+const updateTask=async(req,res)=>{
+    try{
+        
+        const updateeone= await Task.findOneAndUpdate({_id:req.params.id},req.body,{
+            new:true,
+            runValidators:true
+        });
+        res.status(201).json({updateeone})
+        // res.json(req.body)
+    }catch(err){
+        res.status(404).json({msg:err})
+    }
 }
-const deleteTask=(req,res)=>{
-    res.send("delete a task")
+const deleteTask=async(req,res)=>{
+    try{
+        
+        const deleteone= await Task.findOneAndDelete({_id:req.params.id});
+        res.status(201).json({deleteone})
+        // res.json(req.body)
+    }catch(err){
+        res.status(404).json({msg:err})
+    }
 }
 
 
